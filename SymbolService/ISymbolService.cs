@@ -1,10 +1,15 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
+using SymbolService.Models;
 
 namespace RESTSymbolService
 {
     [ServiceContract]
     public interface ISymbolService
     {
+        [OperationContract]
+        string LoadSectors(List<Sector> sectors);
+
         [OperationContract]
         string GetSymbols();
 
@@ -15,7 +20,7 @@ namespace RESTSymbolService
         string GetPerson(int id);
 
         [OperationContract]
-        Person InsertPerson(Person person);
+        Person InsertPerson(Person[] person);
   
         [OperationContract]
         Person UpdatePerson(int id, Person person);

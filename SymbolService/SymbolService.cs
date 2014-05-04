@@ -10,6 +10,8 @@ using System.Net;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Xml;
 using Newtonsoft.Json;
 using SymbolService.Logs;
 using SymbolService.Models;
@@ -21,6 +23,34 @@ namespace RESTSymbolService
     public class SymbolService : ISymbolService
     {
         private SymbolContext db = new SymbolContext();
+
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json, UriTemplate = "/LoadSectors")]
+        public string LoadSectors(List<Sector> sectors)
+        {
+            string result = "You didn't say the magic word!";
+
+            //using (WebResponse response = request.GetResponse())
+            //{
+            //    foreach (var headerKey in response.Headers.Keys)
+            //    {
+            //        var headerValues = response.Headers.GetValues(headerKey.ToString());
+            //        Trace.TraceInformation("Response Header: {0}, Value: {1}", headerKey, String.Join(";", headerValues));
+            //    }
+            //}
+
+            //System.IO.StreamReader reader = new System.IO.StreamReader(HttpContext.Current.Request.InputStream);
+            //string requestFromPost = reader.ReadToEnd();
+
+            //foreach (string key in HttpContext.Current.Request.Form.AllKeys)
+            //{
+            //    string value = HttpContext.Current.Request.Form[key];
+            //}
+
+            return result;
+        }
+
+
 
         [WebGet(UriTemplate = "/TickerSymbols", ResponseFormat = WebMessageFormat.Json)]
         public string GetValidSymbols()
@@ -78,11 +108,22 @@ namespace RESTSymbolService
             {
                 var sectorList = GetSectorsAndIndustries();
 
+                var xml = new XmlDocument();
+                xml.LoadXml(sectorList);
+
+                var assfart = JsonConvert.SerializeObject(xml);
+
+                var jumba = assfart.Substring(assfart.IndexOf("results\":") + "results\":".Length);
+                jumba = jumba.Substring(0, jumba.IndexOf("},\"#comment\":[]}"));
+                
+                var bege = JsonConvert.DeserializeObject<Sectors>(jumba);
+
                 var symbolList = db.TickerSymbols.ToList();
 
                 if (symbolList.Count > 0)
                 {
                     json = JsonConvert.SerializeObject(symbolList);
+                    // TODO: check date for stale data
                 }
                 else
                 {
@@ -108,6 +149,7 @@ namespace RESTSymbolService
 
                     TickerSymbol lastTicker = new TickerSymbol();
 
+                    // TODO: add bulk copy
                     foreach (DataRow item in sortedTable.Rows)
                     {
                         string name = item["name"].ToString();
@@ -160,8 +202,9 @@ namespace RESTSymbolService
             return json;
         }
 
-        [WebInvoke(UriTemplate = "Person", Method = "POST")]
-        public Person InsertPerson(Person person)
+        [WebInvoke(UriTemplate = "Person", RequestFormat = WebMessageFormat.Json, 
+            ResponseFormat = WebMessageFormat.Json, Method = "POST")]
+        public Person InsertPerson(Person[] person)
         {
             return people[2];
         }
@@ -179,14 +222,16 @@ namespace RESTSymbolService
 
         private static string GetSectorsAndIndustries()
         {
-            string url = string.Format("http://query.yahooapis.com/v1/public/yql?{0}", "q=select%20*%20from%20yahoo.finance.sectors&env=store://datatables.org/alltableswithkeys")
+            string url = string.Format("http://query.yahooapis.com/v1/public/yql?{0}",
+                                       "q=select%20*%20from%20yahoo.finance.sectors&env=store://datatables.org/alltableswithkeys");
             string webData = string.Empty;
                 try
             {
                 using (WebClient client = new WebClient())
                 {
                     webData = client.DownloadString(url);
-                    webData = Regex.Replace("&", "&amp;");
+                    webData = webData.Replace("&", "&amp;");
+
                     if (webData.Length < 500)
                     {
                         webData = "";

@@ -8,3 +8,4 @@ C:\Projects\SymbolService\SymbolService\bin\EntityFramework.SqlServer.xml
 C:\Projects\SymbolService\SymbolService\bin\Newtonsoft.Json.xml
 C:\Projects\SymbolService\SymbolService\obj\Debug\SymbolService.dll
 C:\Projects\SymbolService\SymbolService\obj\Debug\SymbolService.pdb
+C:\Projects\SymbolService\SymbolService\obj\Debug\RESTSymbolService.csprojResolveAssemblyReference.cache
