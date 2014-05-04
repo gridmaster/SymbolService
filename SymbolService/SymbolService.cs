@@ -70,34 +70,14 @@ namespace RESTSymbolService
         [WebGet(UriTemplate = "/Symbols", ResponseFormat = WebMessageFormat.Json)]
         public string GetSymbols()
         {
-            //try
-            //{
-            //    TickerSymbol ts = new TickerSymbol
-            //        {
-            //            Date = DateTime.Now,
-            //            //Deleted = null,
-            //            ExchangeId = "0",
-            //            ExchangeName = "NYSE",
-            //            Id = 1,
-            //            Industry = "Crap",
-            //            KeyStat = "keystat",
-            //            TimeStamp = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-            //            Name = "BFD"
-            //        };
-            //    db.TickerSymbols.Add(ts);
-            //    db.SaveChanges();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return "Error writing to Ticker Table: " + ex.Message + " --- " + ex.InnerException;
-            //}
-
             Log.WriteLog(new LogEvent("SymbolService - GetSymbols loading...", ""));
 
             string json = string.Empty;
 
             try
             {
+                var sectorList = GetSectorsAndIndustries();
+
                 var symbolList = db.TickerSymbols.ToList();
 
                 if (symbolList.Count > 0)
@@ -126,6 +106,8 @@ namespace RESTSymbolService
                         dic.Add(item["industry_id"].ToString(), item["name"].ToString());
                     }
 
+                    TickerSymbol lastTicker = new TickerSymbol();
+
                     foreach (DataRow item in sortedTable.Rows)
                     {
                         string name = item["name"].ToString();
@@ -139,6 +121,12 @@ namespace RESTSymbolService
                                 TimeStamp = DateTime.Now,
                                 Industry = dic[item["industry_id"].ToString()]
                             };
+
+                        if( lastTicker.Symbol == ts.Symbol && lastTicker.Name == ts.Name && lastTicker.Industry == ts.Industry )
+                            continue;
+
+                        lastTicker = ts;
+
                         db.TickerSymbols.Add(ts);
                         db.SaveChanges();
                     }
@@ -188,6 +176,35 @@ namespace RESTSymbolService
         public void DeletePerson(int id)
         {
         }
+
+        private static string GetSectorsAndIndustries()
+        {
+            string url = string.Format("http://query.yahooapis.com/v1/public/yql?{0}", "q=select%20*%20from%20yahoo.finance.sectors&env=store://datatables.org/alltableswithkeys")
+            string webData = string.Empty;
+                try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    webData = client.DownloadString(url);
+                    webData = Regex.Replace("&", "&amp;");
+                    if (webData.Length < 500)
+                    {
+                        webData = "";
+                        using (StreamReader sr = new StreamReader(@"D:\Projects\ScreenScraper\ScreenScraper\sectorlist.xml"))
+                        {
+                            webData = sr.ReadToEnd();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog(string.Format("Error reading XML. Error: {0}", ex.Message));
+                webData = string.Format("Error reading XML. Error: {0}", ex.Message);
+            }
+            return webData;
+        }
+
 
         private static string GetSymbolList()
         {
