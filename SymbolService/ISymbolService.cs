@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel;
 using SymbolService.Models;
 
@@ -8,7 +9,7 @@ namespace RESTSymbolService
     public interface ISymbolService
     {
         [OperationContract]
-        string LoadSectors(List<Sector> sectors);
+        string LoadSectors(SectorRequest sectors); // Sector[] sectors);
 
         [OperationContract]
         string GetSymbols();

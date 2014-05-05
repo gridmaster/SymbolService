@@ -26,26 +26,9 @@ namespace RESTSymbolService
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, UriTemplate = "/LoadSectors")]
-        public string LoadSectors(List<Sector> sectors)
+        public string LoadSectors(SectorRequest sectors)
         {
             string result = "You didn't say the magic word!";
-
-            //using (WebResponse response = request.GetResponse())
-            //{
-            //    foreach (var headerKey in response.Headers.Keys)
-            //    {
-            //        var headerValues = response.Headers.GetValues(headerKey.ToString());
-            //        Trace.TraceInformation("Response Header: {0}, Value: {1}", headerKey, String.Join(";", headerValues));
-            //    }
-            //}
-
-            //System.IO.StreamReader reader = new System.IO.StreamReader(HttpContext.Current.Request.InputStream);
-            //string requestFromPost = reader.ReadToEnd();
-
-            //foreach (string key in HttpContext.Current.Request.Form.AllKeys)
-            //{
-            //    string value = HttpContext.Current.Request.Form[key];
-            //}
 
             return result;
         }

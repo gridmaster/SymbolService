@@ -7,12 +7,12 @@ namespace SymbolService.Models
     {
         [Key]
         [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [JsonProperty(PropertyName = "industryId")]
-        public int IndustryId { get; set; }
+        public int industryId { get; set; }
 
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public string name { get; set; }
     }
 }

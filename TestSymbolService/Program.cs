@@ -12,7 +12,7 @@ namespace TestSymbolService
 {
     class Program
     {
-        private static string BaseUri = @"http://localhost:45667";
+        private static string BaseUri = @"http://localhost:45667"; // @"http://tickersymbol.info"; //
         private static string LoadSectorUri = @"/LoadSectors";
         private static string PersonUri = @"/Person";
 
@@ -41,7 +41,7 @@ namespace TestSymbolService
         static void Main(string[] args)
         {
 
-            //var result = Post(BaseUri + PersonUri, people);
+            var result = Post(BaseUri + PersonUri, people);
 
             string uri = BaseUri + LoadSectorUri;
 
@@ -49,15 +49,15 @@ namespace TestSymbolService
             
             Industry industry1 = new Industry
                 {
-                    Id = 12,
-                    IndustryId = 1,
-                    Name = "hoo-doo"
+                    id = 12,
+                    industryId = 1,
+                    name = "hoo-doo"
                 };
             Industry industry2 = new Industry
             {
-                Id = 13,
-                IndustryId = 2,
-                Name = "voo-doo"
+                id = 13,
+                industryId = 2,
+                name = "voo-doo"
             };
             
             List<Industry> industries = new List<Industry> {industry1, industry2};
@@ -65,13 +65,19 @@ namespace TestSymbolService
             Sector sector = new Sector
                 {
                     id = 1,
-                    Name = "Sup dude?",
-                    Industries = industries
+                    name = "Sup dude?",
+                    industry = industries
                 };
             sectors.Add(sector);
+            sectors.Add(sector);
 
-            string jsondata = JsonConvert.SerializeObject(sectors);
-            var json = Post(uri, sectors);
+            SectorRequest sr = new SectorRequest
+                {
+                    sector = sectors
+                };
+
+            string jsondata = JsonConvert.SerializeObject(sr);
+            var json = Post(uri, sr);
             Console.WriteLine(json);
             Console.ReadKey();
         }

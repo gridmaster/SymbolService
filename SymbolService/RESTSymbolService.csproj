@@ -82,10 +82,12 @@
     <Compile Include="ISymbolService.cs" />
     <Compile Include="Logs\Log.cs" />
     <Compile Include="Logs\LogEvent.cs" />
+    <Compile Include="Models\BaseRequestData.cs" />
     <Compile Include="Models\Context\SymbolContext.cs" />
     <Compile Include="Models\Industry.cs" />
     <Compile Include="Models\Interfaces\IDbContext.cs" />
     <Compile Include="Models\Sector.cs" />
+    <Compile Include="Models\SectorRequest.cs" />
     <Compile Include="Models\Sectors.cs" />
     <Compile Include="Models\TickerSymbolxxx.cs" />
     <Compile Include="Person.cs" />

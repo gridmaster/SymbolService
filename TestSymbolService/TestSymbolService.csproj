@@ -45,9 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BaseRequestData.cs" />
     <Compile Include="Models\Industry.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Sector.cs" />
+    <Compile Include="Models\SectorRequest.cs" />
     <Compile Include="Models\Sectors.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

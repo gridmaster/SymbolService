@@ -7,12 +7,13 @@ namespace TestSymbolService.Models
     public class Sector
     {
         [Key]
+        [JsonProperty(PropertyName = "id")]
         public int id { get; set; }
 
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public string name { get; set; }
 
         [JsonProperty(PropertyName = "industry")]
-        public List<Industry> Industries { get; set; } 
+        public List<Industry> industry { get; set; } 
     }
 }
