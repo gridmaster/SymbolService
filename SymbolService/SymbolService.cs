@@ -28,7 +28,16 @@ namespace RESTSymbolService
             ResponseFormat = WebMessageFormat.Json, UriTemplate = "/LoadSectors")]
         public string LoadSectors(SectorRequest sectors)
         {
-            string result = "You didn't say the magic word!";
+            string result = string.Empty;
+
+            if (sectors.token != "bc2afdc0-6f68-497a-9f6c-4e261331c256")
+            {
+                result = "You didn't say the magic word!";
+            }
+            else
+            {
+                result = "Got 'em!";
+            }
 
             return result;
         }

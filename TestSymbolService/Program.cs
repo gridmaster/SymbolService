@@ -12,7 +12,7 @@ namespace TestSymbolService
 {
     class Program
     {
-        private static string BaseUri = @"http://localhost:45667"; // @"http://tickersymbol.info"; //
+        private static string BaseUri = @"http://localhost:45667"; // @"http://tickersymbol.info"; 
         private static string LoadSectorUri = @"/LoadSectors";
         private static string PersonUri = @"/Person";
 
@@ -41,7 +41,7 @@ namespace TestSymbolService
         static void Main(string[] args)
         {
 
-            var result = Post(BaseUri + PersonUri, people);
+            // var result = Post(BaseUri + PersonUri, people);
 
             string uri = BaseUri + LoadSectorUri;
 
@@ -49,15 +49,15 @@ namespace TestSymbolService
             
             Industry industry1 = new Industry
                 {
-                    id = 12,
-                    industryId = 1,
-                    name = "hoo-doo"
+                    Id = 12,
+                    IndustryId = 1,
+                    Name = "hoo-doo"
                 };
             Industry industry2 = new Industry
             {
-                id = 13,
-                industryId = 2,
-                name = "voo-doo"
+                Id = 13,
+                IndustryId = 2,
+                Name = "voo-doo"
             };
             
             List<Industry> industries = new List<Industry> {industry1, industry2};
@@ -75,9 +75,16 @@ namespace TestSymbolService
                 {
                     sector = sectors
                 };
+            sr.token = "bc2afdc0-6f68-497a-9f6c-4e261331c256";
 
             string jsondata = JsonConvert.SerializeObject(sr);
             var json = Post(uri, sr);
+            Console.WriteLine(json);
+
+            sr.token = Guid.NewGuid().ToString();
+            jsondata = JsonConvert.SerializeObject(sr);
+
+            json = Post(uri, sr);
             Console.WriteLine(json);
             Console.ReadKey();
         }

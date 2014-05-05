@@ -6,13 +6,13 @@ namespace SymbolService.Models
     public class Industry
     {
         [Key]
-        [JsonProperty(PropertyName = "id")]
-        public int id { get; set; }
+        [JsonProperty(PropertyName = "Id")]
+        public int Id { get; set; }
 
-        [JsonProperty(PropertyName = "industryId")]
-        public int industryId { get; set; }
+        [JsonProperty(PropertyName = "IndustryId")]
+        public int IndustryId { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
-        public string name { get; set; }
+        [JsonProperty(PropertyName = "Name")]
+        public string Name { get; set; }
     }
 }
