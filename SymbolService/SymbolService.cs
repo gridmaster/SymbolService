@@ -36,7 +36,7 @@ namespace RESTSymbolService
             }
             else
             {
-                result = "Got 'em!";
+                result = JsonConvert.SerializeObject(sectors); //  "Got 'em!";
             }
 
             return result;

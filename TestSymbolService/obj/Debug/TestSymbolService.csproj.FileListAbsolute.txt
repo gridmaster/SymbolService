@@ -6,3 +6,11 @@ C:\Projects\SymbolService\TestSymbolService\obj\Debug\TestSymbolService.exe
 C:\Projects\SymbolService\TestSymbolService\obj\Debug\TestSymbolService.pdb
 C:\Projects\SymbolService\TestSymbolService\bin\Debug\Newtonsoft.Json.dll
 C:\Projects\SymbolService\TestSymbolService\bin\Debug\Newtonsoft.Json.xml
+D:\Projects\SymbolService\TestSymbolService\bin\Debug\TestSymbolService.exe.config
+D:\Projects\SymbolService\TestSymbolService\bin\Debug\TestSymbolService.exe
+D:\Projects\SymbolService\TestSymbolService\bin\Debug\TestSymbolService.pdb
+D:\Projects\SymbolService\TestSymbolService\bin\Debug\Newtonsoft.Json.dll
+D:\Projects\SymbolService\TestSymbolService\bin\Debug\Newtonsoft.Json.xml
+D:\Projects\SymbolService\TestSymbolService\obj\Debug\TestSymbolService.csprojResolveAssemblyReference.cache
+D:\Projects\SymbolService\TestSymbolService\obj\Debug\TestSymbolService.exe
+D:\Projects\SymbolService\TestSymbolService\obj\Debug\TestSymbolService.pdb

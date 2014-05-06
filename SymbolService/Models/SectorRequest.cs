@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SymbolService.Models
 {
     public class SectorRequest : BaseRequestData
     {
-        public List<Sector> sector { get; set; }
+        [JsonProperty(PropertyName = "sectors")]
+        public List<Sector> sectors { get; set; }
     }
 }
