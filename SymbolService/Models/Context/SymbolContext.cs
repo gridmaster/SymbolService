@@ -8,9 +8,8 @@ namespace SymbolService.Models.Context
     {
         public DbSet<TickerSymbol> TickerSymbols { get; set; }
         public DbSet<Industry> Industries { get; set; }
-
         public DbSet<Sector> Sectors { get; set; }
-
+        public DbSet<LastUpdate> LastUpdates { get; set; }
         public DbSet<LogEvent> Logs { get; set; }
 
         #region GetConnectionstring

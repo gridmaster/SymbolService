@@ -12,8 +12,8 @@ using System.ServiceModel.Web;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Newtonsoft.Json;
-using RESTSymbolService;
 using SymbolService.BulkLoad;
+using SymbolService.Core;
 using SymbolService.Logs;
 using SymbolService.Models;
 using SymbolService.Models.Context;
@@ -32,7 +32,7 @@ namespace SymbolService
         public string LoadSectors(SectorRequest sectors)
         {
             Log.WriteLog(new LogEvent(
-                string.Format("RESTSymbolService - LoadSectors(): range start: {0} - count: {1}", sectors.sectors[0].Id, sectors.sectors.Count), " - do bulk insert"));
+                string.Format("SymbolService - LoadSectors(): range start: {0} - count: {1}", sectors.sectors[0].Id, sectors.sectors.Count), " - do bulk insert"));
             
             string result = string.Empty;
 
@@ -63,13 +63,42 @@ namespace SymbolService
             return result;
         }
 
+        [WebInvoke(Method = "POST", UriTemplate = "/LoadDailySectors", ResponseFormat = WebMessageFormat.Json)]
+        public string LoadDailySectors(BasicRequest basicRequest)
+        {
+            Log.WriteLog(new LogEvent("SymbolService - LoadDailySectors", "insert"));
+
+            string result = string.Empty;
+
+            if (basicRequest.token != "bc2afdc0-6f68-497a-9f6c-4e261331c256")
+            {
+                result = "You didn't say the magic word!";
+            }
+            else
+            {
+                var maxCount = SectorWorks.LoadSectors();
+                var today = DateTime.Now.ToShortDateString();
+
+                if (maxCount > 0)
+                {
+                    var myDate = new LastUpdate();
+                    myDate.Name = "Sectors";
+                    myDate.Date = today;
+                    myDate.Count = maxCount;
+                    db.LastUpdates.Add(myDate);
+                    db.SaveChanges();
+                }
+            }
+            return result;
+        }
+
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "/LoadIndustries")]
         public string LoadIndustries(IndustryRequest industries)
         {
             Log.WriteLog(new LogEvent(
-                string.Format("RESTSymbolService - LoadIndustries(): range start: {0} - count: {1}", industries.industries[0].Id, industries.industries.Count), " - do bulk insert"));
+                string.Format("SymbolService - LoadIndustries(): range start: {0} - count: {1}", industries.industries[0].Id, industries.industries.Count), " - do bulk insert"));
 
             string result = string.Empty;
 
@@ -100,7 +129,34 @@ namespace SymbolService
             return result;
         }
 
+        [WebInvoke(Method = "POST", UriTemplate = "/LoadDailyIndustries", ResponseFormat = WebMessageFormat.Json)]
+        public string LoadDailyIndustries(BasicRequest basicRequest)
+        {
+            Log.WriteLog(new LogEvent("SymbolService - LoadDailyIndustries", "insert"));
 
+            string result = string.Empty;
+
+            if (basicRequest.token != "bc2afdc0-6f68-497a-9f6c-4e261331c256")
+            {
+                result = "You didn't say the magic word!";
+            }
+            else
+            {
+                var maxCount = IndustryWorks.LoadIndustries();
+                var today = DateTime.Now.ToShortDateString();
+
+                if (maxCount > 0)
+                {
+                    var myDate = new LastUpdate();
+                    myDate.Name = "Industries";
+                    myDate.Date = today;
+                    myDate.Count = maxCount;
+                    db.LastUpdates.Add(myDate);
+                    db.SaveChanges();
+                }
+            }
+            return result;
+        }
 
         [WebGet(UriTemplate = "/TickerSymbols", ResponseFormat = WebMessageFormat.Json)]
         public string GetValidSymbols()

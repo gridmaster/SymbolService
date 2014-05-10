@@ -1,4 +1,4 @@
-﻿namespace RESTSymbolService
+﻿namespace SymbolService
 {
     public class Person
     {

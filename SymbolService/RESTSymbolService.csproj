@@ -78,6 +78,11 @@
   <ItemGroup>
     <Compile Include="BulkLoad\BulkLoadIndustry.cs" />
     <Compile Include="BulkLoad\BulkLoadSector.cs" />
+    <Compile Include="Core\IndustryWorks.cs" />
+    <Compile Include="Core\SectorWorks.cs" />
+    <Compile Include="Core\StringWorks.cs" />
+    <Compile Include="Core\URLs.cs" />
+    <Compile Include="Core\WebWorks.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -85,10 +90,12 @@
     <Compile Include="Logs\Log.cs" />
     <Compile Include="Logs\LogEvent.cs" />
     <Compile Include="BulkLoad\BaseBulkLoad.cs" />
+    <Compile Include="Models\LastUpdate.cs" />
     <Compile Include="Models\Requests\BaseRequestData.cs" />
     <Compile Include="Models\BaseSymbol.cs" />
     <Compile Include="Models\Context\SymbolContext.cs" />
     <Compile Include="Models\Industries.cs" />
+    <Compile Include="Models\Requests\BasicRequest.cs" />
     <Compile Include="Models\Requests\IndustryRequest.cs" />
     <Compile Include="Models\WCFModels\WCFIndustry.cs" />
     <Compile Include="Models\WCFModels\WCFSector.cs" />
@@ -97,7 +104,6 @@
     <Compile Include="Models\Sector.cs" />
     <Compile Include="Models\Requests\SectorRequest.cs" />
     <Compile Include="Models\Sectors.cs" />
-    <Compile Include="Models\TickerSymbolxxx.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="SymbolService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

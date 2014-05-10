@@ -1,5 +1,4 @@
 ﻿using System.ServiceModel;
-using RESTSymbolService;
 using SymbolService.Models.Requests;
 
 namespace SymbolService
@@ -11,7 +10,13 @@ namespace SymbolService
         string LoadSectors(SectorRequest sectors);
 
         [OperationContract]
+        string LoadDailySectors(BasicRequest basicRequest);
+
+        [OperationContract]
         string LoadIndustries(IndustryRequest industries);
+
+        [OperationContract]
+        string LoadDailyIndustries(BasicRequest basicRequest);
 
         [OperationContract]
         string GetSymbols();
