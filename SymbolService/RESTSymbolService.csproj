@@ -76,20 +76,26 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BulkLoadSector.cs" />
+    <Compile Include="BulkLoad\BulkLoadIndustry.cs" />
+    <Compile Include="BulkLoad\BulkLoadSector.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ISymbolService.cs" />
     <Compile Include="Logs\Log.cs" />
     <Compile Include="Logs\LogEvent.cs" />
-    <Compile Include="Models\BaseRequestData.cs" />
+    <Compile Include="BulkLoad\BaseBulkLoad.cs" />
+    <Compile Include="Models\Requests\BaseRequestData.cs" />
+    <Compile Include="Models\BaseSymbol.cs" />
     <Compile Include="Models\Context\SymbolContext.cs" />
-    <Compile Include="Models\WCFSector.cs" />
+    <Compile Include="Models\Industries.cs" />
+    <Compile Include="Models\Requests\IndustryRequest.cs" />
+    <Compile Include="Models\WCFModels\WCFIndustry.cs" />
+    <Compile Include="Models\WCFModels\WCFSector.cs" />
     <Compile Include="Models\Industry.cs" />
     <Compile Include="Models\Interfaces\IDbContext.cs" />
     <Compile Include="Models\Sector.cs" />
-    <Compile Include="Models\SectorRequest.cs" />
+    <Compile Include="Models\Requests\SectorRequest.cs" />
     <Compile Include="Models\Sectors.cs" />
     <Compile Include="Models\TickerSymbolxxx.cs" />
     <Compile Include="Person.cs" />

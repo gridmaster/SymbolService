@@ -12,12 +12,14 @@ using System.ServiceModel.Web;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Newtonsoft.Json;
-using SymbolService;
+using RESTSymbolService;
+using SymbolService.BulkLoad;
 using SymbolService.Logs;
 using SymbolService.Models;
 using SymbolService.Models.Context;
+using SymbolService.Models.Requests;
 
-namespace RESTSymbolService
+namespace SymbolService
 {
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SymbolService : ISymbolService
@@ -26,13 +28,12 @@ namespace RESTSymbolService
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
-         //   BodyStyle = WebMessageBodyStyle.WrappedRequest, 
             UriTemplate = "/LoadSectors")]
         public string LoadSectors(SectorRequest sectors)
         {
-            Log.WriteLog(new LogEvent("RESTSymbolService - LoadSectors():", " - do bulk insert"));
-
-
+            Log.WriteLog(new LogEvent(
+                string.Format("RESTSymbolService - LoadSectors(): range start: {0} - count: {1}", sectors.sectors[0].Id, sectors.sectors.Count), " - do bulk insert"));
+            
             string result = string.Empty;
 
             if (sectors.token != "bc2afdc0-6f68-497a-9f6c-4e261331c256")
@@ -41,23 +42,59 @@ namespace RESTSymbolService
             }
             else
             {
-                result = "Got 'em!";  // JsonConvert.SerializeObject(sectors);
+                result = "Got 'em!";
                 Sectors bulkSectors = new Sectors();
 
                 for (int i = 0; i < sectors.sectors.Count; i++)
                 {
-                    //db.Sectors.Add(sectors.sectors[i].ConvertToSector());
-                    //db.SaveChanges();
-
                     Sector sector = sectors.sectors[i].ConvertToSector();
                     bulkSectors.Add(sector);
                 }
 
-                var dt = BulkLoadSector.ConfigureDataTableForSectors();
+                BulkLoadSector bls = new BulkLoadSector();
 
-                dt = BulkLoadSector.LoadDataTableWithSectors(bulkSectors, dt);
+                var dt = bls.ConfigureDataTable();
 
-                BulkLoadSector.BulkCopySectors(dt);
+                dt = bls.LoadDataTableWithSectors(bulkSectors, dt);
+
+                bls.BulkCopy<Sectors>(dt);
+            }
+
+            return result;
+        }
+
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "/LoadIndustries")]
+        public string LoadIndustries(IndustryRequest industries)
+        {
+            Log.WriteLog(new LogEvent(
+                string.Format("RESTSymbolService - LoadIndustries(): range start: {0} - count: {1}", industries.industries[0].Id, industries.industries.Count), " - do bulk insert"));
+
+            string result = string.Empty;
+
+            if (industries.token != "bc2afdc0-6f68-497a-9f6c-4e261331c256")
+            {
+                result = "You didn't say the magic word!";
+            }
+            else
+            {
+                result = "Got 'em!"; 
+                Industries bulkIndustries = new Industries();
+
+                for (int i = 0; i < industries.industries.Count; i++)
+                {
+                    Industry industry = industries.industries[i].ConvertToIndustry();
+                    bulkIndustries.Add(industry);
+                }
+
+                BulkLoadIndustry bli = new BulkLoadIndustry();
+
+                var dt = bli.ConfigureDataTable();
+
+                dt = bli.LoadDataTableWithIndustries(bulkIndustries, dt);
+
+                bli.BulkCopy<Industries>(dt);
             }
 
             return result;

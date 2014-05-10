@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.ServiceModel;
-using SymbolService.Models;
+﻿using System.ServiceModel;
+using RESTSymbolService;
+using SymbolService.Models.Requests;
 
-namespace RESTSymbolService
+namespace SymbolService
 {
     [ServiceContract]
     public interface ISymbolService
     {
         [OperationContract]
-        string LoadSectors(SectorRequest sectors); // Sector[] sectors);
+        string LoadSectors(SectorRequest sectors);
+
+        [OperationContract]
+        string LoadIndustries(IndustryRequest industries);
 
         [OperationContract]
         string GetSymbols();

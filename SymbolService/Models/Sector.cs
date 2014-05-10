@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 
 namespace SymbolService.Models
 {
-    public class Sector
+    public class Sector : BaseSymbol
     {
         [JsonProperty(PropertyName = "Id")]
         public int Id { get; set; }
-        [JsonProperty(PropertyName = "date")]
+        [JsonProperty(PropertyName = "Date")]
         public DateTime Date { get; set; }
         [JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
@@ -32,18 +32,10 @@ namespace SymbolService.Models
         [JsonProperty(PropertyName = "PriceToFreeCashFlowMrq")]
         public decimal PriceToFreeCashFlowMrq { get; set; }
 
-        private string dateForSerialization;
-
         [OnSerializing]
         void OnSerializing(StreamingContext context)
         {
-            this.dateForSerialization = this.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
-        }
-
-        [OnDeserializing]
-        void OnDeserializing(StreamingContext context)
-        {
-            this.dateForSerialization = "1900-01-01";
+            base.dateForSerialization = this.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TestSymbolService.Models
+namespace TestSymbolService.Models.Requests
 {
     public class SectorRequest : BaseRequestData
     {

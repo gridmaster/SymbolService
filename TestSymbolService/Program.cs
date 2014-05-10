@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TestSymbolService.Models;
+using TestSymbolService.Models.Requests;
 
 namespace TestSymbolService
 {

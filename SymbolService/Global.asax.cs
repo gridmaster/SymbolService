@@ -2,7 +2,7 @@
 using System.ServiceModel.Activation;
 using System.Web.Routing;
 
-namespace RESTSymbolService
+namespace SymbolService
 {
     public class Global : System.Web.HttpApplication
     {
