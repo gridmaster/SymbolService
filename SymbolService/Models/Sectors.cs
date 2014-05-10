@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace SymbolService.Models
 {
-    public class Sectors
+    public class Sectors : List<Sector>
     {
-        [JsonProperty(PropertyName = "sector")]
-        public List<Sector> Sectorz { get; set; }
     }
 }

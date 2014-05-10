@@ -10,9 +10,9 @@ using System.Net;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 using Newtonsoft.Json;
+using SymbolService;
 using SymbolService.Logs;
 using SymbolService.Models;
 using SymbolService.Models.Context;
@@ -25,9 +25,14 @@ namespace RESTSymbolService
         private SymbolContext db = new SymbolContext();
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
-            ResponseFormat = WebMessageFormat.Json, UriTemplate = "/LoadSectors")]
+            ResponseFormat = WebMessageFormat.Json,
+         //   BodyStyle = WebMessageBodyStyle.WrappedRequest, 
+            UriTemplate = "/LoadSectors")]
         public string LoadSectors(SectorRequest sectors)
         {
+            Log.WriteLog(new LogEvent("RESTSymbolService - LoadSectors():", " - do bulk insert"));
+
+
             string result = string.Empty;
 
             if (sectors.token != "bc2afdc0-6f68-497a-9f6c-4e261331c256")
@@ -36,7 +41,23 @@ namespace RESTSymbolService
             }
             else
             {
-                result = JsonConvert.SerializeObject(sectors); //  "Got 'em!";
+                result = "Got 'em!";  // JsonConvert.SerializeObject(sectors);
+                Sectors bulkSectors = new Sectors();
+
+                for (int i = 0; i < sectors.sectors.Count; i++)
+                {
+                    //db.Sectors.Add(sectors.sectors[i].ConvertToSector());
+                    //db.SaveChanges();
+
+                    Sector sector = sectors.sectors[i].ConvertToSector();
+                    bulkSectors.Add(sector);
+                }
+
+                var dt = BulkLoadSector.ConfigureDataTableForSectors();
+
+                dt = BulkLoadSector.LoadDataTableWithSectors(bulkSectors, dt);
+
+                BulkLoadSector.BulkCopySectors(dt);
             }
 
             return result;
@@ -323,6 +344,7 @@ namespace RESTSymbolService
                         LastName = "Standard"
                     }
             };
+
         #endregion private objects
 
     }

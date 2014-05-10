@@ -8,7 +8,6 @@ C:\Projects\SymbolService\SymbolService\bin\EntityFramework.SqlServer.xml
 C:\Projects\SymbolService\SymbolService\bin\Newtonsoft.Json.xml
 C:\Projects\SymbolService\SymbolService\obj\Debug\SymbolService.dll
 C:\Projects\SymbolService\SymbolService\obj\Debug\SymbolService.pdb
-C:\Projects\SymbolService\SymbolService\obj\Debug\RESTSymbolService.csprojResolveAssemblyReference.cache
 D:\Projects\SymbolService\SymbolService\obj\Debug\RESTSymbolService.csprojResolveAssemblyReference.cache
 D:\Projects\SymbolService\SymbolService\obj\Debug\SymbolService.dll
 D:\Projects\SymbolService\SymbolService\obj\Debug\SymbolService.pdb
@@ -20,3 +19,4 @@ D:\Projects\SymbolService\SymbolService\bin\Newtonsoft.Json.dll
 D:\Projects\SymbolService\SymbolService\bin\EntityFramework.xml
 D:\Projects\SymbolService\SymbolService\bin\EntityFramework.SqlServer.xml
 D:\Projects\SymbolService\SymbolService\bin\Newtonsoft.Json.xml
+C:\Projects\SymbolService\SymbolService\obj\Debug\RESTSymbolService.csprojResolveAssemblyReference.cache

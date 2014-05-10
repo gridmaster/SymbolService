@@ -76,6 +76,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkLoadSector.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -84,6 +85,7 @@
     <Compile Include="Logs\LogEvent.cs" />
     <Compile Include="Models\BaseRequestData.cs" />
     <Compile Include="Models\Context\SymbolContext.cs" />
+    <Compile Include="Models\WCFSector.cs" />
     <Compile Include="Models\Industry.cs" />
     <Compile Include="Models\Interfaces\IDbContext.cs" />
     <Compile Include="Models\Sector.cs" />
