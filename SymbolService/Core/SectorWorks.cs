@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -91,6 +92,32 @@ namespace SymbolService.Core
 
                 return selected;
             }
+        }
+
+        public static Dictionary<string, string> GetSectorNames()
+        {
+            SymbolContext db = new SymbolContext();
+            Dictionary<string, string> sectorNames = new Dictionary<string, string>();
+            DateTime maxDate = db.Sectors.Max(d => d.Date);
+
+            Log.WriteLog(new LogEvent(string.Format("SectorWorks - GetSectorNames() for date {0}", maxDate), ""));
+
+            string json = string.Empty;
+
+            try
+            {
+                var sectors = db.Sectors.Where(s => s.Date == maxDate).ToList();
+                for (int i = 0; i < sectors.Count(); i++)
+                {
+                    sectorNames.Add(sectors[0].Id.ToString(), sectors[0].Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog(new LogEvent("SectortWorks - GetSectorNames Error:", ex.ToString()));
+            }
+
+            return sectorNames;
         }
     }
 }

@@ -7,10 +7,16 @@ namespace SymbolService
     public interface ISymbolService
     {
         [OperationContract]
+        string GetSectors();
+
+        [OperationContract]
         string LoadSectors(SectorRequest sectors);
 
         [OperationContract]
         string LoadDailySectors(BasicRequest basicRequest);
+
+        [OperationContract]
+        string GetIndustries();
 
         [OperationContract]
         string LoadIndustries(IndustryRequest industries);

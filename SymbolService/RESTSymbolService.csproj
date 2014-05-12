@@ -97,6 +97,7 @@
     <Compile Include="Models\Industries.cs" />
     <Compile Include="Models\Requests\BasicRequest.cs" />
     <Compile Include="Models\Requests\IndustryRequest.cs" />
+    <Compile Include="Models\ViewModels\IndustryView.cs" />
     <Compile Include="Models\WCFModels\WCFIndustry.cs" />
     <Compile Include="Models\WCFModels\WCFSector.cs" />
     <Compile Include="Models\Industry.cs" />
