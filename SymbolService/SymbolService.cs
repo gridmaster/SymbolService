@@ -32,7 +32,7 @@ namespace SymbolService
         {
             DateTime maxDate = db.Sectors.Max(d => d.Date);
 
-            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetSectors() for date {0}", maxDate), " - do bulk insert"));
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetSectors() for date {0}", maxDate), " - return current sectors"));
 
             string json = string.Empty;
 
