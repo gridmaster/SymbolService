@@ -149,30 +149,43 @@ namespace SymbolService
 
             try
             {
+                //var spunk = from d in db.Industries
+                //            join s in db.Sectors on s.Id equals d.SectorId
+                //            where d.Date == maxDate 
+                //            select d, s;
+                
+                
+
+
                 var industries = db.Industries.Where(i => i.Date == maxDate);
 
                 List<IndustryView> industryList = new List<IndustryView>();
 
                 foreach (var industry in industries)
                 {
+                    string sectorName = "Unknown";
+                    if (sectorNames.ContainsKey(industry.SectorId.ToString(CultureInfo.InvariantCulture)))
+                        sectorName = sectorNames[industry.SectorId.ToString(CultureInfo.InvariantCulture)];
+
                     IndustryView t = new IndustryView
-                    {
-                        Id = industry.Id,
-                        Sector = sectorNames[industry.SectorId.ToString(CultureInfo.InvariantCulture)],
-                        Date = industry.Date,
-                        Name = industry.Name,
-                        OneDayPriceChgPerCent = industry.OneDayPriceChgPerCent,
-                        MarketCap = industry.MarketCap,
-                        PriceToEarnings = industry.PriceToEarnings,
-                        ROEPerCent = industry.ROEPerCent,
-                        DivYieldPerCent = industry.DivYieldPerCent,
-                        DebtToEquity = industry.DebtToEquity,
-                        PriceToBook = industry.PriceToBook,
-                        NetProfitMarginMrq = industry.NetProfitMarginMrq,
-                        PriceToFreeCashFlowMrq = industry.PriceToFreeCashFlowMrq
-                    };
+                        {
+                            Id = industry.Id,
+                            Sector = sectorName,
+                            Date = industry.Date,
+                            Name = industry.Name,
+                            OneDayPriceChgPerCent = industry.OneDayPriceChgPerCent,
+                            MarketCap = industry.MarketCap,
+                            PriceToEarnings = industry.PriceToEarnings,
+                            ROEPerCent = industry.ROEPerCent,
+                            DivYieldPerCent = industry.DivYieldPerCent,
+                            DebtToEquity = industry.DebtToEquity,
+                            PriceToBook = industry.PriceToBook,
+                            NetProfitMarginMrq = industry.NetProfitMarginMrq,
+                            PriceToFreeCashFlowMrq = industry.PriceToFreeCashFlowMrq
+                        };
                     industryList.Add(t);
                 }
+
                 json = JsonConvert.SerializeObject(industryList).Replace("T00:00:00", "");
             }
             catch (Exception ex)
@@ -233,7 +246,7 @@ namespace SymbolService
             }
             else
             {
-                var maxCount = IndustryWorks.LoadIndustries();
+                var maxCount = IndustryWorks.LoadIndustriesBySector();
                 var today = DateTime.Now.ToShortDateString();
 
                 if (maxCount > 0)

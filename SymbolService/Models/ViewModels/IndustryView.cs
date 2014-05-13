@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Newtonsoft.Json;
 
 namespace SymbolService.Models.ViewModels
@@ -10,7 +7,7 @@ namespace SymbolService.Models.ViewModels
     {
         [JsonProperty(PropertyName = "Id")]
         public int Id { get; set; }
-        [JsonProperty(PropertyName = "SectorId")]
+        [JsonProperty(PropertyName = "Sector")]
         public string Sector { get; set; }
         [JsonProperty(PropertyName = "Date")]
         public DateTime Date { get; set; }

@@ -19,4 +19,3 @@ D:\Projects\SymbolService\SymbolService\bin\Newtonsoft.Json.dll
 D:\Projects\SymbolService\SymbolService\bin\EntityFramework.xml
 D:\Projects\SymbolService\SymbolService\bin\EntityFramework.SqlServer.xml
 D:\Projects\SymbolService\SymbolService\bin\Newtonsoft.Json.xml
-C:\Projects\SymbolService\SymbolService\obj\Debug\RESTSymbolService.csprojResolveAssemblyReference.cache

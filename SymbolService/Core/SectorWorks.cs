@@ -109,7 +109,7 @@ namespace SymbolService.Core
                 var sectors = db.Sectors.Where(s => s.Date == maxDate).ToList();
                 for (int i = 0; i < sectors.Count(); i++)
                 {
-                    sectorNames.Add(sectors[0].Id.ToString(), sectors[0].Name);
+                    sectorNames.Add(sectors[i].Id.ToString(), sectors[i].Name);
                 }
             }
             catch (Exception ex)
