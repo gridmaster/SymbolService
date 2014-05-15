@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace SymbolService.Core
             foreach (Sector sector in Sectors)
             {
                 // this creates a string from a stream reader
-                var sTopLinks = WebWorks.GetResponse(sUri.Replace("!^$^!", i.ToString()));
+                var sTopLinks = WebWorks.GetResponse(sUri.Replace("!^$^!", i.ToString(CultureInfo.InvariantCulture)));
                 i++;
 
                 //...so we need to re-stream it

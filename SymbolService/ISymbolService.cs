@@ -1,5 +1,7 @@
 ﻿using System.ServiceModel;
+using SymbolService.Models;
 using SymbolService.Models.Requests;
+using SymbolService.Models.ViewModels;
 
 namespace SymbolService
 {
@@ -7,7 +9,7 @@ namespace SymbolService
     public interface ISymbolService
     {
         [OperationContract]
-        string GetSectors();
+        Sectors GetSectors();
 
         [OperationContract]
         string LoadSectors(SectorRequest sectors);
@@ -16,7 +18,10 @@ namespace SymbolService
         string LoadDailySectors(BasicRequest basicRequest);
 
         [OperationContract]
-        string GetIndustries();
+        Industries GetIndustries();
+
+        [OperationContract]
+        IndustryView IndustryWithSectorName();
 
         [OperationContract]
         string LoadIndustries(IndustryRequest industries);

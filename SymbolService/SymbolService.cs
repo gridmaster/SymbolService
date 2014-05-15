@@ -28,7 +28,7 @@ namespace SymbolService
         private SymbolContext db = new SymbolContext();
 
         [WebGet(UriTemplate = "/Sectors", ResponseFormat = WebMessageFormat.Json)]
-        public string GetSectors()
+        public Sectors GetSectors()
         {
             DateTime maxDate = db.Sectors.Max(d => d.Date);
 
@@ -40,7 +40,7 @@ namespace SymbolService
             {
                 var sectors = db.Sectors.Where(s => s.Date == maxDate);
 
-                List<Sector> sectorList = new List<Sector>();
+                Sectors sectorList = new Sectors();
 
                 foreach (var sector in sectors)
                 {
@@ -68,7 +68,8 @@ namespace SymbolService
                 json = string.Format("Get Sectors threw error: {0}", ex.Message);
                 Log.WriteLog(new LogEvent(string.Format("SymbolService - Get Sectors for date {0}", maxDate), json));
             }
-            return json;
+
+            return JsonConvert.DeserializeObject<Sectors>(json);
         }
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
@@ -138,10 +139,9 @@ namespace SymbolService
         }
 
         [WebGet(UriTemplate = "/Industries", ResponseFormat = WebMessageFormat.Json)]
-        public string GetIndustries()
+        public Industries GetIndustries()
         {
             DateTime maxDate = db.Industries.Max(d => d.Date);
-            Dictionary<string, string> sectorNames = SectorWorks.GetSectorNames();
 
             Log.WriteLog(new LogEvent(string.Format("SymbolService - GetIndustries() for date {0}", maxDate), " - do bulk insert"));
 
@@ -149,28 +149,16 @@ namespace SymbolService
 
             try
             {
-                //var spunk = from d in db.Industries
-                //            join s in db.Sectors on s.Id equals d.SectorId
-                //            where d.Date == maxDate 
-                //            select d, s;
-                
-                
-
-
                 var industries = db.Industries.Where(i => i.Date == maxDate);
 
-                List<IndustryView> industryList = new List<IndustryView>();
+                Industries industryList = new Industries();
 
                 foreach (var industry in industries)
                 {
-                    string sectorName = "Unknown";
-                    if (sectorNames.ContainsKey(industry.SectorId.ToString(CultureInfo.InvariantCulture)))
-                        sectorName = sectorNames[industry.SectorId.ToString(CultureInfo.InvariantCulture)];
-
-                    IndustryView t = new IndustryView
+                    Industry t = new Industry
                         {
                             Id = industry.Id,
-                            Sector = sectorName,
+                            SectorId = industry.SectorId,
                             Date = industry.Date,
                             Name = industry.Name,
                             OneDayPriceChgPerCent = industry.OneDayPriceChgPerCent,
@@ -193,7 +181,57 @@ namespace SymbolService
                 json = string.Format("Get Industries threw error: {0}", ex.Message);
                 Log.WriteLog(new LogEvent(string.Format("SymbolService - Get Industries for date {0}", maxDate), json));
             }
-            return json;
+            return JsonConvert.DeserializeObject<Industries>(json);
+        }
+
+        [WebGet(UriTemplate = "/IndustriesWithSectorName", ResponseFormat = WebMessageFormat.Json)]
+        public IndustryView IndustryWithSectorName()
+        {
+            DateTime maxDate = db.Industries.Max(d => d.Date);
+            Dictionary<string, string> sectorNames = SectorWorks.GetSectorNames();
+
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetIndustries() for date {0}", maxDate), " - do bulk insert"));
+
+            string json = string.Empty;
+
+            try
+            {
+                var industries = db.Industries.Where(i => i.Date == maxDate);
+
+                List<IndustryView> industryList = new List<IndustryView>();
+
+                foreach (var industry in industries)
+                {
+                    string sectorName = "Unknown";
+                    if (sectorNames.ContainsKey(industry.SectorId.ToString(CultureInfo.InvariantCulture)))
+                        sectorName = sectorNames[industry.SectorId.ToString(CultureInfo.InvariantCulture)];
+
+                    IndustryView t = new IndustryView
+                    {
+                        Id = industry.Id,
+                        Sector = sectorName,
+                        Date = industry.Date,
+                        Name = industry.Name,
+                        OneDayPriceChgPerCent = industry.OneDayPriceChgPerCent,
+                        MarketCap = industry.MarketCap,
+                        PriceToEarnings = industry.PriceToEarnings,
+                        ROEPerCent = industry.ROEPerCent,
+                        DivYieldPerCent = industry.DivYieldPerCent,
+                        DebtToEquity = industry.DebtToEquity,
+                        PriceToBook = industry.PriceToBook,
+                        NetProfitMarginMrq = industry.NetProfitMarginMrq,
+                        PriceToFreeCashFlowMrq = industry.PriceToFreeCashFlowMrq
+                    };
+                    industryList.Add(t);
+                }
+                json = JsonConvert.SerializeObject(industryList).Replace("T00:00:00", "");
+            }
+            catch (Exception ex)
+            {
+                json = string.Format("Get Industries threw error: {0}", ex.Message);
+                Log.WriteLog(new LogEvent(string.Format("SymbolService - Get Industries for date {0}", maxDate), json));
+            }
+            return JsonConvert.DeserializeObject<IndustryView>(json);
         }
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
