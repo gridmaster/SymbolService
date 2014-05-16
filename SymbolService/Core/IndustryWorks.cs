@@ -53,14 +53,16 @@ namespace SymbolService.Core
 
                     if (reader.EndOfStream) break;
 
-                    myrow = StringWorks.fixComma(myrow);
+                    myrow = StringWorks.fixComma(myrow).Replace("  ", " ");
 
                     var cols = myrow.Split(',');
 
-                    var wtf = cols[0].IndexOf("Ind", System.StringComparison.Ordinal);
+                    var wtf = cols[1].IndexOf("1-Day Price Chg %", System.StringComparison.Ordinal);
 
+                    
                     // skip header
-                    if (cols[0].IndexOf("Ind", System.StringComparison.Ordinal) > -1) continue;
+                    if (cols[1].IndexOf("1-Day Price Chg %", System.StringComparison.Ordinal) > -1) 
+                        continue;
 
                     var industry = new Industry();
                     industry.SectorId = sector.Id;

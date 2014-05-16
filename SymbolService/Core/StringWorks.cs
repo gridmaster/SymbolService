@@ -33,7 +33,7 @@ namespace SymbolService.Core
             var secondQuote = value.Substring(1).IndexOf("\"");
             if (firstComma < secondQuote)
             {
-                return value.Substring(0, firstComma - 1) + PlaceHolder + value.Substring(firstComma + 1);
+                return value.Substring(0, firstComma) + PlaceHolder + value.Substring(firstComma + 1);
             }
 
             return value;
