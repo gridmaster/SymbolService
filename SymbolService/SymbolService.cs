@@ -25,51 +25,29 @@ namespace SymbolService
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SymbolService : ISymbolService
     {
-        private SymbolContext db = new SymbolContext();
+        private static SymbolContext db = new SymbolContext();
 
         [WebGet(UriTemplate = "/Sectors", ResponseFormat = WebMessageFormat.Json)]
+        public string Sectors()
+        {
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - Sectors()"), "Start"));
+            return ReturnSectores();
+        }
+
+        [WebGet(UriTemplate = "/GetSectors", ResponseFormat = WebMessageFormat.Json)]
         public Sectors GetSectors()
         {
-            DateTime maxDate = db.Sectors.Max(d => d.Date);
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetSectors()"), "Start"));
 
-            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetSectors() for date {0}", maxDate), " - do bulk insert"));
+            string json = ReturnSectores();
 
-            string json = string.Empty;
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetSectors()"), json));
 
-            try
-            {
-                var sectors = db.Sectors.Where(s => s.Date == maxDate);
+            Sectors sectors = JsonConvert.DeserializeObject<Sectors>(json);
 
-                Sectors sectorList = new Sectors();
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetSectors()"), "Return " + sectors.Count + " sectors"));
 
-                foreach (var sector in sectors)
-                {
-                    Sector t = new Sector
-                        {
-                            Id = sector.Id,
-                            Date = sector.Date,
-                            Name = sector.Name,
-                            OneDayPriceChgPerCent = sector.OneDayPriceChgPerCent,
-                            MarketCap = sector.MarketCap,
-                            PriceToEarnings = sector.PriceToEarnings,
-                            ROEPerCent = sector.ROEPerCent,
-                            DivYieldPerCent = sector.DivYieldPerCent,
-                            DebtToEquity = sector.DebtToEquity,
-                            PriceToBook = sector.PriceToBook,
-                            NetProfitMarginMrq = sector.NetProfitMarginMrq,
-                            PriceToFreeCashFlowMrq = sector.PriceToFreeCashFlowMrq
-                        };
-                    sectorList.Add(t);
-                }
-                json = JsonConvert.SerializeObject(sectorList).Replace("T00:00:00", "");
-            }
-            catch (Exception ex)
-            {
-                json = string.Format("Get Sectors threw error: {0}", ex.Message);
-                Log.WriteLog(new LogEvent(string.Format("SymbolService - Get Sectors for date {0}", maxDate), json));
-            }
-
-            return JsonConvert.DeserializeObject<Sectors>(json);
+            return sectors;
         }
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
@@ -139,48 +117,20 @@ namespace SymbolService
         }
 
         [WebGet(UriTemplate = "/Industries", ResponseFormat = WebMessageFormat.Json)]
+        public string Industries()
+        {
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - Industries()"), "Start"));
+
+            return ReturnIndustries();
+        }
+
+        [WebGet(UriTemplate = "/GetIndustries", ResponseFormat = WebMessageFormat.Json)]
         public Industries GetIndustries()
         {
-            DateTime maxDate = db.Industries.Max(d => d.Date);
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetIndustries()"), "Start"));
 
-            Log.WriteLog(new LogEvent(string.Format("SymbolService - GetIndustries() for date {0}", maxDate), " - do bulk insert"));
+            string json = ReturnIndustries();
 
-            string json = string.Empty;
-
-            try
-            {
-                var industries = db.Industries.Where(i => i.Date == maxDate);
-
-                Industries industryList = new Industries();
-
-                foreach (var industry in industries)
-                {
-                    Industry t = new Industry
-                        {
-                            Id = industry.Id,
-                            SectorId = industry.SectorId,
-                            Date = industry.Date,
-                            Name = industry.Name,
-                            OneDayPriceChgPerCent = industry.OneDayPriceChgPerCent,
-                            MarketCap = industry.MarketCap,
-                            PriceToEarnings = industry.PriceToEarnings,
-                            ROEPerCent = industry.ROEPerCent,
-                            DivYieldPerCent = industry.DivYieldPerCent,
-                            DebtToEquity = industry.DebtToEquity,
-                            PriceToBook = industry.PriceToBook,
-                            NetProfitMarginMrq = industry.NetProfitMarginMrq,
-                            PriceToFreeCashFlowMrq = industry.PriceToFreeCashFlowMrq
-                        };
-                    industryList.Add(t);
-                }
-
-                json = JsonConvert.SerializeObject(industryList).Replace("T00:00:00", "");
-            }
-            catch (Exception ex)
-            {
-                json = string.Format("Get Industries threw error: {0}", ex.Message);
-                Log.WriteLog(new LogEvent(string.Format("SymbolService - Get Industries for date {0}", maxDate), json));
-            }
             return JsonConvert.DeserializeObject<Industries>(json);
         }
 
@@ -433,14 +383,6 @@ namespace SymbolService
             return json;
         }
 
-        [WebGet(UriTemplate = "/Peeps", ResponseFormat = WebMessageFormat.Json)]
-        public string GetPeople()
-        {
-            string json = JsonConvert.SerializeObject(people);
-
-            return json;
-        }
-
         [WebGet(UriTemplate = "/Person?id={id}", ResponseFormat = WebMessageFormat.Json)]
         public string GetPerson(int id)
         {
@@ -468,6 +410,95 @@ namespace SymbolService
         {
         }
 
+        private static string ReturnSectores()
+        {
+            DateTime maxDate = db.Sectors.Max(d => d.Date);
+
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - ReturnSectores() for date {0}", maxDate), " - do bulk insert"));
+
+            string json = string.Empty;
+
+            try
+            {
+                var sectors = db.Sectors.Where(s => s.Date == maxDate);
+
+                Sectors sectorList = new Sectors();
+
+                foreach (var sector in sectors)
+                {
+                    Sector t = new Sector
+                    {
+                        Id = sector.Id,
+                        Date = sector.Date,
+                        Name = sector.Name,
+                        OneDayPriceChgPerCent = sector.OneDayPriceChgPerCent,
+                        MarketCap = sector.MarketCap,
+                        PriceToEarnings = sector.PriceToEarnings,
+                        ROEPerCent = sector.ROEPerCent,
+                        DivYieldPerCent = sector.DivYieldPerCent,
+                        DebtToEquity = sector.DebtToEquity,
+                        PriceToBook = sector.PriceToBook,
+                        NetProfitMarginMrq = sector.NetProfitMarginMrq,
+                        PriceToFreeCashFlowMrq = sector.PriceToFreeCashFlowMrq
+                    };
+                    sectorList.Add(t);
+                }
+                json = JsonConvert.SerializeObject(sectorList).Replace("T00:00:00", "");
+            }
+            catch (Exception ex)
+            {
+                json = string.Format("Return Sectors threw error: {0}", ex.Message);
+                Log.WriteLog(new LogEvent(string.Format("SymbolService - Return Sectors for date {0}", maxDate), json));
+            }
+
+            return json;
+        }
+
+        private static string ReturnIndustries()
+        {
+            DateTime maxDate = db.Industries.Max(d => d.Date);
+
+            Log.WriteLog(new LogEvent(string.Format("SymbolService - ReturnIndustries() for date {0}", maxDate), " - do bulk insert"));
+
+            string json = string.Empty;
+
+            try
+            {
+                var industries = db.Industries.Where(i => i.Date == maxDate);
+
+                Industries industryList = new Industries();
+
+                foreach (var industry in industries)
+                {
+                    Industry t = new Industry
+                    {
+                        Id = industry.Id,
+                        SectorId = industry.SectorId,
+                        Date = industry.Date,
+                        Name = industry.Name,
+                        OneDayPriceChgPerCent = industry.OneDayPriceChgPerCent,
+                        MarketCap = industry.MarketCap,
+                        PriceToEarnings = industry.PriceToEarnings,
+                        ROEPerCent = industry.ROEPerCent,
+                        DivYieldPerCent = industry.DivYieldPerCent,
+                        DebtToEquity = industry.DebtToEquity,
+                        PriceToBook = industry.PriceToBook,
+                        NetProfitMarginMrq = industry.NetProfitMarginMrq,
+                        PriceToFreeCashFlowMrq = industry.PriceToFreeCashFlowMrq
+                    };
+                    industryList.Add(t);
+                }
+
+                json = JsonConvert.SerializeObject(industryList).Replace("T00:00:00", "");
+            }
+            catch (Exception ex)
+            {
+                json = string.Format("Return Industries threw error: {0}", ex.Message);
+                Log.WriteLog(new LogEvent(string.Format("SymbolService - Return Industries for date {0}", maxDate), json));
+            }
+            return json;
+        }
+        
         private static string GetSectorsAndIndustries()
         {
             string url = string.Format("http://query.yahooapis.com/v1/public/yql?{0}",

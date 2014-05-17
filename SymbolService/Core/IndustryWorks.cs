@@ -58,7 +58,6 @@ namespace SymbolService.Core
                     var cols = myrow.Split(',');
 
                     var wtf = cols[1].IndexOf("1-Day Price Chg %", System.StringComparison.Ordinal);
-
                     
                     // skip header
                     if (cols[1].IndexOf("1-Day Price Chg %", System.StringComparison.Ordinal) > -1) 

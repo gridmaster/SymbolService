@@ -9,6 +9,9 @@ namespace SymbolService
     public interface ISymbolService
     {
         [OperationContract]
+        string Sectors();
+
+        [OperationContract]
         Sectors GetSectors();
 
         [OperationContract]
@@ -16,6 +19,9 @@ namespace SymbolService
 
         [OperationContract]
         string LoadDailySectors(BasicRequest basicRequest);
+
+        [OperationContract]
+        string Industries();
 
         [OperationContract]
         Industries GetIndustries();
@@ -31,9 +37,6 @@ namespace SymbolService
 
         [OperationContract]
         string GetSymbols();
-
-        [OperationContract]
-        string GetPeople();
 
         [OperationContract]
         string GetPerson(int id);

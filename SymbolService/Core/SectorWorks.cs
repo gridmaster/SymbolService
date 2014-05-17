@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -52,18 +53,17 @@ namespace SymbolService.Core
                 var sector = new Sector();
                 sector.Date = DateTime.Now.Date;
                 sector.Name = cols[0].Replace("\"", "");
-                sector.OneDayPriceChgPerCent = System.Convert.ToDecimal(cols[1]);
+                sector.OneDayPriceChgPerCent = Convert.ToDecimal(cols[1]);
                 sector.MarketCap = cols[2];
-                sector.PriceToEarnings = System.Convert.ToDecimal(cols[3]);
-                sector.ROEPerCent = System.Convert.ToDecimal(cols[4]);
-                sector.DivYieldPerCent = System.Convert.ToDecimal(cols[5] == "\"NA\"" ? "-1" : cols[5]);
-                sector.DebtToEquity = System.Convert.ToDecimal(cols[6] == "\"NA\"" ? "-1" : cols[6]);
-                sector.PriceToBook = System.Convert.ToDecimal(cols[7]);
-                sector.NetProfitMarginMrq = System.Convert.ToDecimal(cols[8]);
-                sector.PriceToFreeCashFlowMrq = System.Convert.ToDecimal(cols[9]);
+                sector.PriceToEarnings = Convert.ToDecimal(cols[3]);
+                sector.ROEPerCent = Convert.ToDecimal(cols[4]);
+                sector.DivYieldPerCent = Convert.ToDecimal(cols[5] == "\"NA\"" ? "-1" : cols[5]);
+                sector.DebtToEquity = Convert.ToDecimal(cols[6] == "\"NA\"" ? "-1" : cols[6]);
+                sector.PriceToBook = Convert.ToDecimal(cols[7]);
+                sector.NetProfitMarginMrq = Convert.ToDecimal(cols[8]);
+                sector.PriceToFreeCashFlowMrq = Convert.ToDecimal(cols[9]);
 
                 db.Sectors.Add(sector);
-
             }
 
             db.SaveChanges();
@@ -102,14 +102,12 @@ namespace SymbolService.Core
 
             Log.WriteLog(new LogEvent(string.Format("SectorWorks - GetSectorNames() for date {0}", maxDate), ""));
 
-            string json = string.Empty;
-
             try
             {
                 var sectors = db.Sectors.Where(s => s.Date == maxDate).ToList();
                 for (int i = 0; i < sectors.Count(); i++)
                 {
-                    sectorNames.Add(sectors[i].Id.ToString(), sectors[i].Name);
+                    sectorNames.Add(sectors[i].Id.ToString(CultureInfo.InvariantCulture), sectors[i].Name);
                 }
             }
             catch (Exception ex)
